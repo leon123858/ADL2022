@@ -11,6 +11,7 @@ from typing import List, Dict
 import torch
 from tqdm.auto import tqdm
 
+
 from utils import Vocab
 
 logging.basicConfig(
@@ -106,7 +107,8 @@ def parse_args() -> Namespace:
         help="Path to Glove Embedding.",
         default="./glove.840B.300d.txt",
     )
-    parser.add_argument("--rand_seed", type=int, help="Random seed.", default=13)
+    parser.add_argument("--rand_seed", type=int,
+                        help="Random seed.", default=13)
     parser.add_argument(
         "--output_dir",
         type=Path,

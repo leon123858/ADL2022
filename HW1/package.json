@@ -1,0 +1,13 @@
+{
+	"name": "hw1",
+	"version": "1.0.0",
+	"description": "hw1 for ADL2022",
+	"scripts": {
+		"downloadWordModel": "./preprocess.sh",
+		"preprocess": "python preprocess_intent.py && python preprocess_slot.py",
+		"format": "autopep8 --in-place --recursive .",
+		"freeze": "pip list --format=freeze > requirements.txt"
+	},
+	"author": "Leon Lin",
+	"license": "ISC"
+}

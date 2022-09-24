@@ -25,7 +25,8 @@ def main(args):
         logging.info(f"Dataset loaded at {str(dataset_path.resolve())}")
 
         tags.update({tag for instance in dataset for tag in instance["tags"]})
-        words.update([token for instance in dataset for token in instance["tokens"]])
+        words.update(
+            [token for instance in dataset for token in instance["tokens"]])
 
     tag2idx = {tag: i for i, tag in enumerate(tags)}
     tag_idx_path = args.output_dir / "tag2idx.json"
@@ -49,7 +50,8 @@ def parse_args() -> Namespace:
         help="Path to Glove Embedding.",
         default="./glove.840B.300d.txt",
     )
-    parser.add_argument("--rand_seed", type=int, help="Random seed.", default=13)
+    parser.add_argument("--rand_seed", type=int,
+                        help="Random seed.", default=13)
     parser.add_argument(
         "--output_dir",
         type=Path,

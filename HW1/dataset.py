@@ -16,7 +16,8 @@ class SeqClsDataset(Dataset):
         self.data = data
         self.vocab = vocab
         self.label_mapping = label_mapping
-        self._idx2label = {idx: intent for intent, idx in self.label_mapping.items()}
+        self._idx2label = {idx: intent for intent,
+                           idx in self.label_mapping.items()}
         self.max_len = max_len
 
     def __len__(self) -> int:

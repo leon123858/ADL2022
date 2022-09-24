@@ -1,4 +1,0 @@
-# requirements
-spacy==3.0.5
-seqeval==1.2.2
-tqdm
