@@ -6,7 +6,8 @@
 		"downloadWordModel": "./preprocess.sh",
 		"preprocess": "python preprocess_intent.py && python preprocess_slot.py",
 		"format": "autopep8 --in-place --recursive .",
-		"freeze": "pip list --format=freeze > requirements.txt"
+		"freeze": "pip list --format=freeze > requirements.txt",
+		"train": "python train_intent.py"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"

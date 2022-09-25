@@ -5,9 +5,11 @@ from pathlib import Path
 from typing import Dict
 
 import torch
+from torch.utils.data import DataLoader
 from tqdm import trange
 
 from dataset import SeqClsDataset
+from model import SeqClassifier
 from utils import Vocab
 
 TRAIN = "train"
@@ -28,22 +30,28 @@ def main(args):
         split: SeqClsDataset(split_data, vocab, intent2idx, args.max_len)
         for split, split_data in data.items()
     }
-    # TODO: crecate DataLoader for train / dev datasets
-
+    # print(datasets[TRAIN][0])
+    # TODO: create DataLoader for train / dev datasets
+    data_loader = DataLoader(
+        datasets[TRAIN], batch_size=args.batch_size, shuffle=True, drop_last=False, num_workers=4)
     embeddings = torch.load(args.cache_dir / "embeddings.pt")
     # TODO: init model and move model to target device(cpu / gpu)
-    model = None
+    num_class = datasets[TRAIN].num_classes
+    model = SeqClassifier(embeddings, args.hidden_size, args.num_layers,
+                          args.dropout, args.bidirectional, num_class)
+    if torch.backends.mps.is_available() and torch.backends.mps.is_built():
+        device = torch.device('mps')
+        model.to(device)
+    # # TODO: init optimizer
+    # optimizer = None
 
-    # TODO: init optimizer
-    optimizer = None
+    # epoch_pbar = trange(args.num_epoch, desc="Epoch")
+    # for epoch in epoch_pbar:
+    #     # TODO: Training loop - iterate over train dataloader and update model weights
+    #     # TODO: Evaluation loop - calculate accuracy and save model weights
+    #     pass
 
-    epoch_pbar = trange(args.num_epoch, desc="Epoch")
-    for epoch in epoch_pbar:
-        # TODO: Training loop - iterate over train dataloader and update model weights
-        # TODO: Evaluation loop - calculate accuracy and save model weights
-        pass
-
-    # TODO: Inference on test set
+    # # TODO: Inference on test set
 
 
 def parse_args() -> Namespace:
