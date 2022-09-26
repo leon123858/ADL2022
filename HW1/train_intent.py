@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Dict
 
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import trange
 
@@ -33,25 +34,34 @@ def main(args):
     # print(datasets[TRAIN][0])
     # TODO: create DataLoader for train / dev datasets
     data_loader = DataLoader(
-        datasets[TRAIN], batch_size=args.batch_size, shuffle=True, drop_last=False, num_workers=4)
+        datasets[TRAIN], batch_size=args.batch_size, collate_fn=datasets[TRAIN].collate_fn, shuffle=True, drop_last=True, num_workers=4)
     embeddings = torch.load(args.cache_dir / "embeddings.pt")
     # TODO: init model and move model to target device(cpu / gpu)
     num_class = datasets[TRAIN].num_classes
+    print("num of class:", num_class)
     model = SeqClassifier(embeddings, args.hidden_size, args.num_layers,
                           args.dropout, args.bidirectional, num_class)
-    if torch.backends.mps.is_available() and torch.backends.mps.is_built():
-        device = torch.device('mps')
-        model.to(device)
-    # # TODO: init optimizer
-    # optimizer = None
-
-    # epoch_pbar = trange(args.num_epoch, desc="Epoch")
-    # for epoch in epoch_pbar:
-    #     # TODO: Training loop - iterate over train dataloader and update model weights
-    #     # TODO: Evaluation loop - calculate accuracy and save model weights
-    #     pass
-
-    # # TODO: Inference on test set
+    # if torch.backends.mps.is_available() and torch.backends.mps.is_built():
+    #     device = torch.device('mps')
+    #     model.to(device)
+    # TODO: init optimizer
+    loss_fn = nn.CrossEntropyLoss()
+    learning_rate = 0.001
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    epoch_pbar = trange(args.num_epoch, desc="Epoch")
+    hidden = None
+    for epoch in epoch_pbar:
+        # TODO: Training loop - iterate over train dataloader and update model weights
+        for i, batch in enumerate(data_loader):
+            model.zero_grad()
+            output, hidden = model(batch, hidden)
+            target_tensor = torch.tensor(batch['target'])
+            print(target_tensor.size())
+            loss = loss_fn(output, target_tensor)
+            loss.backward()
+            optimizer.step()
+        # TODO: Evaluation loop - calculate accuracy and save model weights
+    # TODO: Inference on test set
 
 
 def parse_args() -> Namespace:

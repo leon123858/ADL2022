@@ -34,8 +34,19 @@ class SeqClsDataset(Dataset):
         return len(self.label_mapping)
 
     def collate_fn(self, samples: List[Dict]) -> Dict:
-        # TODO: implement collate_fn
-        raise NotImplementedError
+        # TODO: implement collate_fn, use as middle ware for batch
+        data = [pkg['text'].split() for i, pkg in enumerate(samples)]
+        encode_data = self.vocab.encode_batch(data)
+        target = [self.label_mapping[pkg['intent']]
+                  for i, pkg in enumerate(samples)]
+        encode_target = []
+        for i, index in enumerate(target):
+            element = [0]*self.num_classes
+            element[index] = 1
+            encode_target.append(element)
+        return {
+            'data': encode_data, 'target': encode_target
+        }
 
     def label2idx(self, label: str):
         return self.label_mapping[label]
