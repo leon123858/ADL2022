@@ -50,17 +50,21 @@ def main(args):
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     epoch_pbar = trange(args.num_epoch, desc="Epoch")
     hidden = None
+    # TODO: Inference on train set
     for epoch in epoch_pbar:
-        # TODO: Training loop - iterate over train dataloader and update model weights
+        model.train()
         for i, batch in enumerate(data_loader):
-            model.zero_grad()
+            # TODO: Training loop - iterate over train dataloader and update model weights
             output, hidden = model(batch, hidden)
-            target_tensor = torch.tensor(batch['target'])
-            print(target_tensor.size())
-            loss = loss_fn(output, target_tensor)
+            hidden = hidden.detach()
+            # GRAD_CLIP=1
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1)
+            loss = loss_fn(output, batch['target'])
+            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        # TODO: Evaluation loop - calculate accuracy and save model weights
+            print(loss.item())
+            # TODO: Evaluation loop - calculate accuracy and save model weights
     # TODO: Inference on test set
 
 

@@ -1,7 +1,7 @@
 from typing import Dict
 
 import torch
-from torch.nn import Embedding, RNN, Linear
+from torch.nn import Embedding, RNN, Linear, functional
 
 
 class SeqClassifier(torch.nn.Module):
@@ -20,7 +20,8 @@ class SeqClassifier(torch.nn.Module):
         # TODO: model architecture
         self.rnn = RNN(input_size=self.embed.embedding_dim, hidden_size=hidden_size, num_layers=num_layers,
                        nonlinearity='relu', dropout=dropout, bidirectional=bidirectional, batch_first=True)
-        self.out_layer = Linear(hidden_size, num_class)
+        self.out_layer = Linear(
+            hidden_size*(2 if bidirectional == True else 1), num_class)
 
     # @property
     # def encoder_output_size(self) -> int:
@@ -29,13 +30,13 @@ class SeqClassifier(torch.nn.Module):
 
     def forward(self, batch, hidden=None) -> Dict[str, torch.Tensor]:
         # TODO: implement model forward
-        data_tensor = torch.tensor(batch['data'])
-        embed_out = self.embed(data_tensor)
-        if hidden == None:
-            out, hidden = self.rnn(embed_out)
-        else:
-            out, hidden = self.rnn(embed_out, hidden)
-        # Reshaping the outputs such that it can be fit into the fully connected layer
-        out = out.contiguous().view(-1, self.rnn.hidden_size)
-        out = self.out_layer(out)
-        return out, hidden
+        data = batch['data'].clone()
+        # batch_size * string_len
+        embed_out = self.embed(data)
+        # batch_size * string_len * word_vector_len
+        rnn_out, hidden = self.rnn(embed_out, hidden)
+        # batch_size * string_len * hidden_size * (2 if 雙向)
+        encode_out = torch.mean(rnn_out, 1)
+        # batch_size * hidden_size * (2 if 雙向)
+        final_out = self.out_layer(encode_out)
+        return final_out, hidden

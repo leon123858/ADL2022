@@ -1,5 +1,6 @@
 from typing import List, Dict
 
+import torch
 from torch.utils.data import Dataset
 
 from utils import Vocab
@@ -44,8 +45,11 @@ class SeqClsDataset(Dataset):
             element = [0]*self.num_classes
             element[index] = 1
             encode_target.append(element)
+        data_tensor = torch.tensor(encode_data)
+        target_tensor = torch.tensor(
+            encode_target, dtype=float)
         return {
-            'data': encode_data, 'target': encode_target
+            'data': data_tensor, 'target': target_tensor
         }
 
     def label2idx(self, label: str):
