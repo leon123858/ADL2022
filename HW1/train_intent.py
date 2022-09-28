@@ -54,9 +54,9 @@ def main(args):
     hidden = None
     # TODO: Inference on train set
     for epoch in epoch_pbar:
+        # TODO: Training loop - iterate over train dataloader and update model weights
         model.train()
         for i, batch in enumerate(data_loader):
-            # TODO: Training loop - iterate over train dataloader and update model weights
             output, hidden = model(batch, hidden)
             hidden = hidden.detach()
             # GRAD_CLIP=1
@@ -66,8 +66,28 @@ def main(args):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            print(IS_MPS, loss.item())
-            # TODO: Evaluation loop - calculate accuracy and save model weights
+        # TODO: Evaluation loop - calculate accuracy and save model weights
+        with torch.no_grad():
+            model.eval()
+            epoch_loss = 0
+            epoch_acc = 0
+            for i, batch in enumerate(data_loader):
+                output, hidden = model(batch, hidden)
+                hidden = hidden.detach()
+                clone_batch = batch['target'].clone().to(
+                    'mps' if IS_MPS else 'cpu')
+                loss = loss_fn(output, clone_batch)
+                epoch_loss += loss.item()
+                # _, dataIndex = output.topk(1, dim=1)
+                # _, targetIndex = clone_batch.topk(1, dim=1)
+                # print(dataIndex)
+                # print(targetIndex)
+                # print(torch.eq(dataIndex, targetIndex))
+                # raise "aaa"
+                # epoch_acc += 1 if torch.eq(dataIndex, targetIndex)[0] else 0
+            print('device:', IS_MPS, 'loss:', epoch_loss /
+                  args.batch_size, 'acc:', epoch_acc/args.batch_size)
+
     # TODO: Inference on test set
 
 
