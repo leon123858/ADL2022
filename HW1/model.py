@@ -3,6 +3,9 @@ from typing import Dict
 import torch
 from torch.nn import Embedding, RNN, Linear, functional
 
+IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
+# IS_MPS = False
+
 
 class SeqClassifier(torch.nn.Module):
     def __init__(
@@ -30,7 +33,7 @@ class SeqClassifier(torch.nn.Module):
 
     def forward(self, batch, hidden=None) -> Dict[str, torch.Tensor]:
         # TODO: implement model forward
-        data = batch['data'].clone()
+        data = batch['data'].clone().to('mps' if IS_MPS else 'cpu')
         # batch_size * string_len
         embed_out = self.embed(data)
         # batch_size * string_len * word_vector_len

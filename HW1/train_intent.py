@@ -16,6 +16,8 @@ from utils import Vocab
 TRAIN = "train"
 DEV = "eval"
 SPLITS = [TRAIN, DEV]
+IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
+# IS_MPS = False
 
 
 def main(args):
@@ -23,7 +25,6 @@ def main(args):
         vocab: Vocab = pickle.load(f)
     intent_idx_path = args.cache_dir / "intent2idx.json"
     intent2idx: Dict[str, int] = json.loads(intent_idx_path.read_text())
-
     data_paths = {split: args.data_dir / f"{split}.json" for split in SPLITS}
     data = {split: json.loads(path.read_text())
             for split, path in data_paths.items()}
@@ -35,15 +36,16 @@ def main(args):
     # TODO: create DataLoader for train / dev datasets
     data_loader = DataLoader(
         datasets[TRAIN], batch_size=args.batch_size, collate_fn=datasets[TRAIN].collate_fn, shuffle=True, drop_last=True, num_workers=4)
-    embeddings = torch.load(args.cache_dir / "embeddings.pt")
+    embeddings = torch.load(
+        args.cache_dir / "embeddings.pt", map_location='cpu')
     # TODO: init model and move model to target device(cpu / gpu)
     num_class = datasets[TRAIN].num_classes
     print("num of class:", num_class)
     model = SeqClassifier(embeddings, args.hidden_size, args.num_layers,
                           args.dropout, args.bidirectional, num_class)
-    # if torch.backends.mps.is_available() and torch.backends.mps.is_built():
-    #     device = torch.device('mps')
-    #     model.to(device)
+    if IS_MPS == True:
+        device = torch.device('mps')
+        model.to(device)
     # TODO: init optimizer
     loss_fn = nn.CrossEntropyLoss()
     learning_rate = 0.001
@@ -59,11 +61,12 @@ def main(args):
             hidden = hidden.detach()
             # GRAD_CLIP=1
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1)
-            loss = loss_fn(output, batch['target'])
+            loss = loss_fn(output, batch['target'].clone().to(
+                'mps' if IS_MPS else 'cpu'))
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            print(loss.item())
+            print(IS_MPS, loss.item())
             # TODO: Evaluation loop - calculate accuracy and save model weights
     # TODO: Inference on test set
 

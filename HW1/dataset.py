@@ -1,9 +1,12 @@
+from pickletools import float8
 from typing import List, Dict
 
 import torch
 from torch.utils.data import Dataset
 
 from utils import Vocab
+
+IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
 
 
 class SeqClsDataset(Dataset):
@@ -45,9 +48,8 @@ class SeqClsDataset(Dataset):
             element = [0]*self.num_classes
             element[index] = 1
             encode_target.append(element)
-        data_tensor = torch.tensor(encode_data)
-        target_tensor = torch.tensor(
-            encode_target, dtype=float)
+        data_tensor = torch.tensor(encode_data, dtype=torch.int)
+        target_tensor = torch.tensor(encode_target, dtype=torch.float)
         return {
             'data': data_tensor, 'target': target_tensor
         }
