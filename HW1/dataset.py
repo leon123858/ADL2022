@@ -24,7 +24,6 @@ class SeqClsDataset(Dataset):
         # idx to string
         self._idx2label = {idx: intent for intent,
                            idx in self.label_mapping.items()}
-        self.max_len = max_len
 
     def __len__(self) -> int:
         return len(self.data)
@@ -39,12 +38,12 @@ class SeqClsDataset(Dataset):
 
     def collate_fn(self, samples: List[Dict]) -> Dict:
         # TODO: implement collate_fn, use as middle ware for batch
-        data = [pkg['text'].split() for i, pkg in enumerate(samples)]
+        data = [pkg['text'].split() for _, pkg in enumerate(samples)]
         encode_data = self.vocab.encode_batch(data)
         target = [self.label_mapping[pkg['intent']]
-                  for i, pkg in enumerate(samples)]
+                  for _, pkg in enumerate(samples)]
         encode_target = []
-        for i, index in enumerate(target):
+        for _, index in enumerate(target):
             element = [0]*self.num_classes
             element[index] = 1
             encode_target.append(element)
@@ -56,11 +55,11 @@ class SeqClsDataset(Dataset):
 
     def collate_fn_test(self, samples: List[Dict]) -> Dict:
         # TODO: implement collate_fn, use as middle ware for batch
-        data = [pkg['text'].split() for i, pkg in enumerate(samples)]
+        data = [pkg['text'].split() for _, pkg in enumerate(samples)]
         encode_data = self.vocab.encode_batch(data)
         data_tensor = torch.tensor(encode_data, dtype=torch.int)
         return {
-            'data': data_tensor, 'id': [pkg['id'] for i, pkg in enumerate(samples)]
+            'data': data_tensor, 'id': [pkg['id'] for _, pkg in enumerate(samples)]
         }
 
     def label2idx(self, label: str):

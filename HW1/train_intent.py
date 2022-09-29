@@ -51,10 +51,15 @@ def main(args):
     loss_fn = nn.CrossEntropyLoss()
     learning_rate = args.lr
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, 0.8)
     epoch_pbar = trange(args.num_epoch, desc="Epoch")
     # TODO: Inference on train set
     global_acc = 0
-    for epoch in epoch_pbar:
+    before_acc_low = False
+    # when want to reload modal before
+    if args.recover:
+        model.load_state_dict(torch.load("./ckpt/intent/best.pt"))
+    for _ in epoch_pbar:
         # TODO: Training loop - iterate over train dataloader and update model weights
         model.train()
         for i, batch in enumerate(data_loader_train):
@@ -89,8 +94,13 @@ def main(args):
                   item_count, 'acc:', epoch_acc/item_count)
             if epoch_acc > global_acc:
                 global_acc = epoch_acc
+                before_acc_low = False
                 torch.save(model.state_dict(),
                            args.ckpt_dir / "best.pt")
+            else:
+                if before_acc_low == False:
+                    scheduler.step()
+                before_acc_low = True
 
     # TODO: Inference on test set
 
@@ -136,6 +146,8 @@ def parse_args() -> Namespace:
         "--device", type=torch.device, help="cpu, cuda, cuda:0, cuda:1", default="cpu"
     )
     parser.add_argument("--num_epoch", type=int, default=100)
+    parser.add_argument("--recover", type=bool, default=False)
+    parser.add_argument("--schedule", type=float, default=0.5)
 
     args = parser.parse_args()
     return args

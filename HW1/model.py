@@ -1,7 +1,7 @@
 from typing import Dict
 
 import torch
-from torch.nn import Embedding, RNN, Linear
+from torch.nn import Embedding, RNN, Linear, LSTM
 
 
 class SeqClassifier(torch.nn.Module):
@@ -34,7 +34,7 @@ class SeqClassifier(torch.nn.Module):
         # batch_size * string_len
         embed_out = self.embed(data)
         # batch_size * string_len * word_vector_len
-        rnn_out, hidden = self.rnn(embed_out)
+        rnn_out, _ = self.rnn(embed_out)
         # batch_size * string_len * hidden_size * (2 if 雙向)
         encode_out = torch.mean(rnn_out, 1)
         # batch_size * hidden_size * (2 if 雙向)

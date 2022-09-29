@@ -1,3 +1,4 @@
 cache/
 node_modules/
+ckpt/
 glove.840B.300d.txt
