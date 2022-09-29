@@ -1,10 +1,7 @@
 from typing import Dict
 
 import torch
-from torch.nn import Embedding, RNN, Linear, functional
-
-# IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
-IS_MPS = False
+from torch.nn import Embedding, RNN, Linear
 
 
 class SeqClassifier(torch.nn.Module):
@@ -31,15 +28,15 @@ class SeqClassifier(torch.nn.Module):
     #     # TODO: calculate the output dimension of rnn
     #     raise NotImplementError
 
-    def forward(self, batch, hidden=None) -> Dict[str, torch.Tensor]:
+    def forward(self, batch, IS_MPS=False) -> Dict[str, torch.Tensor]:
         # TODO: implement model forward
         data = batch['data'].clone().to('mps' if IS_MPS else 'cpu')
         # batch_size * string_len
         embed_out = self.embed(data)
         # batch_size * string_len * word_vector_len
-        rnn_out, hidden = self.rnn(embed_out, hidden)
+        rnn_out, hidden = self.rnn(embed_out)
         # batch_size * string_len * hidden_size * (2 if 雙向)
         encode_out = torch.mean(rnn_out, 1)
         # batch_size * hidden_size * (2 if 雙向)
         final_out = self.out_layer(encode_out)
-        return final_out, hidden
+        return final_out

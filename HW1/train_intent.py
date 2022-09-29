@@ -52,15 +52,13 @@ def main(args):
     learning_rate = args.lr
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     epoch_pbar = trange(args.num_epoch, desc="Epoch")
-    hidden = None
     # TODO: Inference on train set
     global_acc = 0
     for epoch in epoch_pbar:
         # TODO: Training loop - iterate over train dataloader and update model weights
         model.train()
         for i, batch in enumerate(data_loader_train):
-            output, hidden = model(batch, hidden)
-            hidden = hidden.detach()
+            output = model(batch, IS_MPS)
             loss = loss_fn(output, batch['target'].clone().to(
                 'mps' if IS_MPS else 'cpu'))
             optimizer.zero_grad()
@@ -74,8 +72,7 @@ def main(args):
             epoch_acc = 0
             item_count = 0
             for i, batch in enumerate(data_loader_eval):
-                output, hidden = model(batch, hidden)
-                hidden = hidden.detach()
+                output = model(batch, IS_MPS)
                 clone_batch = batch['target'].clone().to(
                     'mps' if IS_MPS else 'cpu')
                 loss = loss_fn(output, clone_batch)

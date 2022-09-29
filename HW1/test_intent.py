@@ -23,7 +23,7 @@ def main(args):
     dataset = SeqClsDataset(data, vocab, intent2idx, args.max_len)
     # TODO: crecate DataLoader for test dataset
     data_loader = DataLoader(
-        dataset, batch_size=args.batch_size, collate_fn=dataset.collate_fn, shuffle=False, drop_last=False, num_workers=1)
+        dataset, batch_size=args.batch_size, collate_fn=dataset.collate_fn_test, shuffle=False, drop_last=False, num_workers=1)
     embeddings = torch.load(args.cache_dir / "embeddings.pt")
 
     model = SeqClassifier(
@@ -35,29 +35,28 @@ def main(args):
         dataset.num_classes,
     )
     model.eval()
-
     # load weights into model
     model.load_state_dict(torch.load(args.ckpt_path))
     # TODO: predict dataset
+    outputFile = {}
     with torch.no_grad():
         model.eval()
-        epoch_acc = 0
-        item_count = 0
         for i, batch in enumerate(data_loader):
-            output, hidden = model(batch, hidden)
-            hidden = hidden.detach()
-            clone_batch = batch['target'].clone().to('cpu')
+            output = model(batch, False)
             _, dataIndex = output.topk(1)
-            _, targetIndex = clone_batch.topk(1)
-            for i in range(0, args.batch_size):
-                item_index = dataIndex[i][0]
-                ans_index = targetIndex[i][0]
-                epoch_acc += 1 if torch.eq(item_index,
-                                           ans_index) == torch.tensor(True) else 0
-                item_count += 1
-        print('acc:', epoch_acc/item_count)
-
+            for i in range(0, len(batch['id'])):
+                item_index = dataIndex[i][0].item()
+                intent = dataset.idx2label(item_index)
+                id = batch['id'][i]
+                outputFile[id] = intent
+    item_num = len(outputFile)
     # TODO: write prediction to file (args.pred_file)
+    with open(args.pred_file, 'w+') as pred_file:
+        lines = ["id,intent\n"]
+        for i in range(0, item_num):
+            lines.append(
+                "test-{},{}\n".format(i, outputFile["test-{}".format(i)]))
+        pred_file.writelines(lines)
 
 
 def parse_args() -> Namespace:

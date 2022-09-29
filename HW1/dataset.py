@@ -54,6 +54,15 @@ class SeqClsDataset(Dataset):
             'data': data_tensor, 'target': target_tensor
         }
 
+    def collate_fn_test(self, samples: List[Dict]) -> Dict:
+        # TODO: implement collate_fn, use as middle ware for batch
+        data = [pkg['text'].split() for i, pkg in enumerate(samples)]
+        encode_data = self.vocab.encode_batch(data)
+        data_tensor = torch.tensor(encode_data, dtype=torch.int)
+        return {
+            'data': data_tensor, 'id': [pkg['id'] for i, pkg in enumerate(samples)]
+        }
+
     def label2idx(self, label: str):
         return self.label_mapping[label]
 
