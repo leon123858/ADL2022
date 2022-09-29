@@ -16,8 +16,8 @@ from utils import Vocab
 TRAIN = "train"
 DEV = "eval"
 SPLITS = [TRAIN, DEV]
-IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
-# IS_MPS = False
+# IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
+IS_MPS = False
 
 
 def main(args):
@@ -32,10 +32,11 @@ def main(args):
         split: SeqClsDataset(split_data, vocab, intent2idx, args.max_len)
         for split, split_data in data.items()
     }
-    # print(datasets[TRAIN][0])
     # TODO: create DataLoader for train / dev datasets
-    data_loader = DataLoader(
+    data_loader_train = DataLoader(
         datasets[TRAIN], batch_size=args.batch_size, collate_fn=datasets[TRAIN].collate_fn, shuffle=True, drop_last=True, num_workers=4)
+    data_loader_eval = DataLoader(
+        datasets[DEV], batch_size=args.batch_size, collate_fn=datasets[DEV].collate_fn, shuffle=True, drop_last=True, num_workers=4)
     embeddings = torch.load(
         args.cache_dir / "embeddings.pt", map_location='cpu')
     # TODO: init model and move model to target device(cpu / gpu)
@@ -48,45 +49,51 @@ def main(args):
         model.to(device)
     # TODO: init optimizer
     loss_fn = nn.CrossEntropyLoss()
-    learning_rate = 0.001
+    learning_rate = args.lr
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     epoch_pbar = trange(args.num_epoch, desc="Epoch")
     hidden = None
     # TODO: Inference on train set
+    global_acc = 0
     for epoch in epoch_pbar:
         # TODO: Training loop - iterate over train dataloader and update model weights
         model.train()
-        for i, batch in enumerate(data_loader):
+        for i, batch in enumerate(data_loader_train):
             output, hidden = model(batch, hidden)
             hidden = hidden.detach()
-            # GRAD_CLIP=1
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1)
             loss = loss_fn(output, batch['target'].clone().to(
                 'mps' if IS_MPS else 'cpu'))
             optimizer.zero_grad()
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1, norm_type=2)
             optimizer.step()
         # TODO: Evaluation loop - calculate accuracy and save model weights
         with torch.no_grad():
             model.eval()
             epoch_loss = 0
             epoch_acc = 0
-            for i, batch in enumerate(data_loader):
+            item_count = 0
+            for i, batch in enumerate(data_loader_eval):
                 output, hidden = model(batch, hidden)
                 hidden = hidden.detach()
                 clone_batch = batch['target'].clone().to(
                     'mps' if IS_MPS else 'cpu')
                 loss = loss_fn(output, clone_batch)
                 epoch_loss += loss.item()
-                # _, dataIndex = output.topk(1, dim=1)
-                # _, targetIndex = clone_batch.topk(1, dim=1)
-                # print(dataIndex)
-                # print(targetIndex)
-                # print(torch.eq(dataIndex, targetIndex))
-                # raise "aaa"
-                # epoch_acc += 1 if torch.eq(dataIndex, targetIndex)[0] else 0
-            print('device:', IS_MPS, 'loss:', epoch_loss /
-                  args.batch_size, 'acc:', epoch_acc/args.batch_size)
+                _, dataIndex = output.topk(1)
+                _, targetIndex = clone_batch.topk(1)
+                for i in range(0, args.batch_size):
+                    item_index = dataIndex[i][0]
+                    ans_index = targetIndex[i][0]
+                    epoch_acc += 1 if torch.eq(item_index,
+                                               ans_index) == torch.tensor(True) else 0
+                    item_count += 1
+            print('GPU_USED:', IS_MPS, 'loss:', epoch_loss /
+                  item_count, 'acc:', epoch_acc/item_count)
+            if epoch_acc > global_acc:
+                global_acc = epoch_acc
+                torch.save(model.state_dict(),
+                           args.ckpt_dir / "best.pt")
 
     # TODO: Inference on test set
 

@@ -3,8 +3,8 @@ from typing import Dict
 import torch
 from torch.nn import Embedding, RNN, Linear, functional
 
-IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
-# IS_MPS = False
+# IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
+IS_MPS = False
 
 
 class SeqClassifier(torch.nn.Module):
