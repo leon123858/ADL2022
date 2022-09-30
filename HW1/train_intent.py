@@ -73,15 +73,12 @@ def main(args):
         # TODO: Evaluation loop - calculate accuracy and save model weights
         with torch.no_grad():
             model.eval()
-            epoch_loss = 0
             epoch_acc = 0
             item_count = 0
             for i, batch in enumerate(data_loader_eval):
                 output = model(batch, IS_MPS)
                 clone_batch = batch['target'].clone().to(
                     'mps' if IS_MPS else 'cpu')
-                loss = loss_fn(output, clone_batch)
-                epoch_loss += loss.item()
                 _, dataIndex = output.topk(1)
                 _, targetIndex = clone_batch.topk(1)
                 for i in range(0, args.batch_size):
@@ -90,8 +87,7 @@ def main(args):
                     epoch_acc += 1 if torch.eq(item_index,
                                                ans_index) == torch.tensor(True) else 0
                     item_count += 1
-            print('GPU_USED:', IS_MPS, 'loss:', epoch_loss /
-                  item_count, 'acc:', epoch_acc/item_count)
+            print('GPU_USED:', IS_MPS, 'acc:', epoch_acc/item_count)
             if epoch_acc > global_acc:
                 global_acc = epoch_acc
                 before_acc_low = False
@@ -100,6 +96,8 @@ def main(args):
             else:
                 if before_acc_low == False:
                     scheduler.step()
+                    print("WARNING: low the lr, learning rate is",
+                          scheduler.get_last_lr(), 'now')
                 before_acc_low = True
 
     # TODO: Inference on test set
