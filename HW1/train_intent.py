@@ -16,7 +16,7 @@ from utils import Vocab
 TRAIN = "train"
 DEV = "eval"
 SPLITS = [TRAIN, DEV]
-# IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
+IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
 IS_MPS = False
 
 
@@ -51,26 +51,34 @@ def main(args):
     loss_fn = nn.CrossEntropyLoss()
     learning_rate = args.lr
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, 0.8)
+    scheduler = torch.optim.lr_scheduler.ExponentialLR(
+        optimizer, args.schedule)
     epoch_pbar = trange(args.num_epoch, desc="Epoch")
     # TODO: Inference on train set
     global_acc = 0
     before_acc_low = False
+    loss_plots = []
     # when want to reload modal before
     if args.recover:
         model.load_state_dict(torch.load("./ckpt/intent/best.pt"))
     for _ in epoch_pbar:
         # TODO: Training loop - iterate over train dataloader and update model weights
+        global_loss = 0
         model.train()
         for i, batch in enumerate(data_loader_train):
             output = model(batch, IS_MPS)
             loss = loss_fn(output, batch['target'].clone().to(
                 'mps' if IS_MPS else 'cpu'))
+            global_loss += loss.item()
+            print(loss.item())
             optimizer.zero_grad()
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1, norm_type=2)
+            torch.nn.utils.clip_grad_norm_(
+                model.parameters(), 2, norm_type=2)
             optimizer.step()
         # TODO: Evaluation loop - calculate accuracy and save model weights
+        print("total loss:", global_loss)
+        loss_plots.append(global_loss)
         with torch.no_grad():
             model.eval()
             epoch_acc = 0
@@ -101,6 +109,7 @@ def main(args):
                 before_acc_low = True
 
     # TODO: Inference on test set
+    print("loss_plots:", loss_plots)
 
 
 def parse_args() -> Namespace:
@@ -154,4 +163,5 @@ def parse_args() -> Namespace:
 if __name__ == "__main__":
     args = parse_args()
     args.ckpt_dir.mkdir(parents=True, exist_ok=True)
+    print(args)
     main(args)

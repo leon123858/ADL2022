@@ -7,8 +7,8 @@
 		"preprocess": "python preprocess_intent.py && python preprocess_slot.py",
 		"format": "autopep8 --in-place --recursive .",
 		"freeze": "pip list --format=freeze > requirements.txt",
-		"train": "python train_intent.py --recover=True --hidden_size=512 --schedule=0.5 --num_epoch=10 --batch_size=128 --lr=1e-5 --bidirectional=True --num_layers=2",
-		"test": "python test_intent.py --test_file './data/intent/test.json' --ckpt_path ckpt/intent/best.pt --pred_file 'pred.intent.csv' --hidden_size=512"
+		"train": "python train_intent.py --recover=True --hidden_size=512 --schedule=0.5 --num_epoch=15 --batch_size=64 --lr=1e-5 --dropout=0.1 --num_layers=3",
+		"test": "python test_intent.py --test_file './data/intent/test.json' --ckpt_path ckpt/intent/best.pt --pred_file 'pred.intent.csv' --num_layers=3 --hidden_size=512"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"
