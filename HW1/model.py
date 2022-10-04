@@ -56,8 +56,8 @@ class SlotModel(torch.nn.Module):
         # model
         self.embed = Embedding.from_pretrained(embeddings, freeze=False)
         # TODO: model architecture
-        self.rnn = LSTM(input_size=self.embed.embedding_dim, hidden_size=hidden_size, num_layers=num_layers,
-                        dropout=dropout, bidirectional=bidirectional, batch_first=True)
+        self.rnn = RNN(input_size=self.embed.embedding_dim, hidden_size=hidden_size, num_layers=num_layers,
+                       nonlinearity='relu', dropout=dropout, bidirectional=bidirectional, batch_first=True)
         self.out_layer = Linear(
             hidden_size*(2 if bidirectional == True else 1), num_class + 1)
 

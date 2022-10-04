@@ -74,7 +74,7 @@ def main(args):
             optimizer.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(
-                model.parameters(), 1, norm_type=2)
+                model.parameters(), 2, norm_type=2)
             optimizer.step()
         # TODO: Evaluation loop - calculate accuracy and save model weights
         print("total loss:", global_loss)
