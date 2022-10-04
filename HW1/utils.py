@@ -39,6 +39,14 @@ class Vocab:
         padded_ids = pad_to_len(batch_ids, to_len, self.pad_id)
         return padded_ids
 
+    def encode_batch_slot(
+        self, batch_tokens: List[List[str]], to_len: int = None
+    ) -> List[List[int]]:
+        to_len = max(len(ids)
+                     for ids in batch_tokens) if to_len is None else to_len
+        padded_tokens = pad_to_len(batch_tokens, to_len, -1)
+        return padded_tokens
+
 
 def pad_to_len(seqs: List[List[int]], to_len: int, padding: int) -> List[List[int]]:
     paddeds = [seq[:to_len] + [padding] *

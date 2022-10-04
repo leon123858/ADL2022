@@ -1,12 +1,11 @@
 from pickletools import float8
+
 from typing import List, Dict
 
 import torch
 from torch.utils.data import Dataset
 
 from utils import Vocab
-
-IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
 
 
 class SeqClsDataset(Dataset):
@@ -35,6 +34,30 @@ class SeqClsDataset(Dataset):
     @property
     def num_classes(self) -> int:
         return len(self.label_mapping)
+
+    def collate_fn_slot(self, samples: List[Dict]) -> Dict:
+        # TODO: implement collate_fn, use as middle ware for batch
+        data = [pkg['tokens'] for _, pkg in enumerate(samples)]
+        encode_data = self.vocab.encode_batch(data)
+        target = [[self.label_mapping[item] for _, item in enumerate(
+            pkg['tags'])] for _, pkg in enumerate(samples)]
+        pad_target = self.vocab.encode_batch_slot(target)
+        encode_target = []
+        for _, index_list in enumerate(pad_target):
+            tmp = []
+            for _, index in enumerate(index_list):
+                element = [0]*(self.num_classes + 1)
+                if index >= 0:
+                    element[index] = 1
+                else:
+                    element[self.num_classes] = 1
+                tmp.append(element)
+            encode_target.append(tmp)
+        data_tensor = torch.tensor(encode_data, dtype=torch.int)
+        target_tensor = torch.tensor(encode_target, dtype=torch.float)
+        return {
+            'data': data_tensor, 'target': target_tensor
+        }
 
     def collate_fn(self, samples: List[Dict]) -> Dict:
         # TODO: implement collate_fn, use as middle ware for batch

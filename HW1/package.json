@@ -6,9 +6,13 @@
 		"downloadWordModel": "./preprocess.sh",
 		"preprocess": "python preprocess_intent.py && python preprocess_slot.py",
 		"format": "autopep8 --in-place --recursive .",
-		"freeze": "pip list --format=freeze > requirements.txt",
-		"train": "python train_intent.py --recover=True --hidden_size=512 --schedule=0.5 --num_epoch=15 --batch_size=64 --lr=1e-5 --dropout=0.1 --num_layers=3",
-		"test": "python test_intent.py --test_file './data/intent/test.json' --ckpt_path ckpt/intent/best.pt --pred_file 'pred.intent.csv' --num_layers=3 --hidden_size=512"
+		"freeze": "conda list -e > requirements.txt",
+		"trainIntent": "python train_intent.py --recover=True --hidden_size=512 --schedule=0.5 --num_epoch=15 --batch_size=64 --lr=1e-5 --dropout=0.1 --num_layers=3",
+		"testIntent": "python test_intent.py --test_file './data/intent/test.json' --ckpt_path ckpt/intent/best.pt --pred_file 'pred.intent.csv' --num_layers=3 --hidden_size=512",
+		"trainSlot": "python train_slot.py --hidden_size=512 --schedule=0.5 --num_epoch=15 --batch_size=64 --lr=1e-3 --dropout=0.1 --num_layers=2",
+		"testSlot": "",
+		"train": "yarn trainSlot",
+		"test": "yarn testSlot"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"
