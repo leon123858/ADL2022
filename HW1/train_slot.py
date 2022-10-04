@@ -17,7 +17,7 @@ TRAIN = "train"
 DEV = "eval"
 SPLITS = [TRAIN, DEV]
 IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
-# IS_MPS = False
+IS_MPS = False
 
 
 def main(args):
