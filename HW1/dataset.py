@@ -76,6 +76,15 @@ class SeqClsDataset(Dataset):
             'data': data_tensor, 'target': target_tensor
         }
 
+    def collate_fn_slot_test(self, samples: List[Dict]) -> Dict:
+        # TODO: implement collate_fn, use as middle ware for batch
+        data = [pkg['tokens'] for _, pkg in enumerate(samples)]
+        encode_data = self.vocab.encode_batch(data)
+        data_tensor = torch.tensor(encode_data, dtype=torch.int)
+        return {
+            'data': data_tensor, 'id': [pkg['id'] for _, pkg in enumerate(samples)], "count": [len(pkg['tokens']) for _, pkg in enumerate(samples)]
+        }
+
     def collate_fn_test(self, samples: List[Dict]) -> Dict:
         # TODO: implement collate_fn, use as middle ware for batch
         data = [pkg['text'].split() for _, pkg in enumerate(samples)]

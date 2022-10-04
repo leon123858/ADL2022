@@ -17,7 +17,7 @@ TRAIN = "train"
 DEV = "eval"
 SPLITS = [TRAIN, DEV]
 IS_MPS = torch.backends.mps.is_available() and torch.backends.mps.is_built()
-IS_MPS = False
+# IS_MPS = False
 
 
 def main(args):
@@ -90,14 +90,17 @@ def main(args):
                 _, dataIndex = output.topk(1, dim=2)
                 _, targetIndex = clone_batch.topk(1, dim=2)
                 for i in range(0, args.batch_size):
+                    tmp_acc = 0
                     for j in range(0, len(dataIndex[i])):
                         item_index = dataIndex[i][j]
                         ans_index = targetIndex[i][j]
-                        if torch.eq(ans_index, torch.tensor([num_class])) == torch.tensor(True):
-                            continue
-                        epoch_acc += 1 if torch.eq(item_index,
-                                                   ans_index) == torch.tensor(True) else 0
-                        item_count += 1
+                        if torch.eq(ans_index, torch.tensor([num_class]).to('mps' if IS_MPS else 'cpu')) == torch.tensor(True).to('mps' if IS_MPS else 'cpu'):
+                            tmp_acc = 1
+                            break
+                        if torch.eq(item_index, ans_index) == torch.tensor(False).to('mps' if IS_MPS else 'cpu'):
+                            break
+                    epoch_acc += tmp_acc
+                    item_count += 1
             print('GPU_USED:', IS_MPS, 'acc:', epoch_acc/item_count)
             if epoch_acc > global_acc:
                 global_acc = epoch_acc
