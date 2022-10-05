@@ -48,7 +48,7 @@ def main(args):
         device = torch.device('mps')
         model.to(device)
     # TODO: init optimizer
-    loss_fn = nn.CrossEntropyLoss()
+    loss_fn = nn.BCEWithLogitsLoss()
     learning_rate = args.lr
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     scheduler = torch.optim.lr_scheduler.ExponentialLR(
@@ -70,7 +70,7 @@ def main(args):
             loss = loss_fn(output, batch['target'].clone().to(
                 'mps' if IS_MPS else 'cpu'))
             global_loss += loss.item()
-            print(loss.item())
+            # print(loss.item())
             optimizer.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(
