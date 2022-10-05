@@ -56,7 +56,7 @@ class SeqClsDataset(Dataset):
         data_tensor = torch.tensor(encode_data, dtype=torch.int)
         target_tensor = torch.tensor(encode_target, dtype=torch.float)
         return {
-            'data': data_tensor, 'target': target_tensor
+            'data': data_tensor, 'target': target_tensor, "count": [len(pkg['tokens']) for _, pkg in enumerate(samples)], 'id': [pkg['id'] for _, pkg in enumerate(samples)]
         }
 
     def collate_fn(self, samples: List[Dict]) -> Dict:
