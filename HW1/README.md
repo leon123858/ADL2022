@@ -1,21 +1,30 @@
-# Sample Code for Homework 1 ADL NTU 109 Spring
+# How to use it
 
 ## Environment
 
-```shell
-# should set anaconda first fellow by comments in initScript.sh
-bash initScript.sh
-```
+1. 安裝 node.js 環境
+2. 在 node.js 環境安裝 yarn
+3. 安裝 anaconda 環境
+4. use `conda create --name <env> --file requirement.txt` to create env for anaconda
+5. use `conda activate <env>` to get in enviroment for anaconda
+6. 加載創建環境時無法一同下載的所有相依組建
+   ex: `conda install pytorch torchvision torchaudio -c pytorch-nightly`
 
 ## Preprocessing
 
-```shell
-# To preprocess intent detectiona and slot tagging datasets
-# bash preprocess.sh
-```
+1. 執行 `bash download_glove.sh` 下載詞嵌入用基本模型
+2. 執行 `yarn preprocess`
 
-## Intent detection
+## Training
 
-```shell
-# python train_intent.py
-```
+可至 package.json 調適參數
+
+1. 執行 `yarn trainIntent`
+1. 執行 `yarn testIntent`
+
+## Testing
+
+可至 package.json 調適參數
+
+1. 執行 `yarn trainSlot`
+2. 執行 `yarn testSlot`
