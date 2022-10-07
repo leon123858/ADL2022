@@ -12,9 +12,12 @@
 		"trainSlot": "python train_slot.py --recover=True --hidden_size=512 --schedule=0.5 --num_epoch=200 --batch_size=64 --lr=1e-7 --dropout=0.1 --num_layers=4",
 		"testSlot": "python test_slot.py --test_file './data/slot/test.json' --ckpt_path ckpt/slot/best.pt --pred_file 'pred.slot.csv' --num_layers=4 --hidden_size=512",
 		"start": "cd ./report  && bash ./download.sh && bash ./intent_cls.sh ../data/intent/test.json ./pred.intent.csv && bash ./slot_tag.sh ../data/slot/test.json ./pred.slot.csv",
-		"plot": "python try_seqeval.py --test_file './data/slot/eval.json' --ckpt_path ckpt/slot/best.pt --num_layers=4 --hidden_size=512"
+		"plot": "python try_seqeval.py --test_file './data/slot/eval.json' --ckpt_path ckpt/slot/best.pt --num_layers=4 --hidden_size=512",
+		"clear": "node clear_files.js"
 	},
 	"author": "Leon Lin",
 	"license": "ISC",
-	"dependencies": {}
+	"dependencies": {
+		"del": "^7.0.0"
+	}
 }

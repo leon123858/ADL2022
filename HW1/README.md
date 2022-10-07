@@ -28,3 +28,9 @@
 
 1. 執行 `yarn trainSlot`
 2. 執行 `yarn testSlot`
+
+## Other method
+
+1. 畫 solt 結果分析圖 `yarn plot`
+2. 跑一次報告流程 `yarn start`
+   跑完要使用 `yarn clear` 清除用完的檔案
