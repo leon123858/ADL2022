@@ -1,0 +1,11 @@
+{
+	"name": "hw2",
+	"version": "1.0.0",
+	"description": "the hw2 for ADL",
+	"scripts": {
+		"format": "autopep8 --in-place --recursive .",
+		"freeze": "conda list -e > requirements.txt"
+	},
+	"author": "Leon Lin",
+	"license": "ISC"
+}
