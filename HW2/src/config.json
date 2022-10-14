@@ -1,0 +1,13 @@
+{
+	"BUFFER_SIZE": 2048,
+	"BATCH_SIZE": 64,
+	"EPOCHS": 200,
+	"EMBED_DIM": 256,
+	"NUM_HEADS": 8,
+	"LEARNING_RATE": 1e-3,
+	"MAX_LENGTH": 512,
+	"RECOVER": false,
+	"DEVICE": "cpu",
+	"START_TOKEN": "<start>",
+	"STOP_TOKEN": "<end>"
+}

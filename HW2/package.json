@@ -4,7 +4,8 @@
 	"description": "the hw2 for ADL",
 	"scripts": {
 		"format": "autopep8 --in-place --recursive .",
-		"freeze": "conda list -e > requirements.txt"
+		"freeze": "conda list -e > requirements.txt",
+		"preprocess": "cd src && python preprocess.py"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"
