@@ -5,7 +5,8 @@
 	"scripts": {
 		"format": "autopep8 --in-place --recursive .",
 		"freeze": "conda list -e > requirements.txt",
-		"preprocess": "cd src && python preprocess.py"
+		"preprocess": "cd src && python preprocess.py",
+		"train": "cd src && python train_select.py --model_name_or_path roberta-base --do_train --do_eval --learning_rate 5e-5 --num_train_epochs 3 --output_dir ./swag_base --per_gpu_eval_batch_size=16 --per_device_train_batch_size=16 --overwrite_output"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"

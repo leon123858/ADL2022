@@ -6,13 +6,13 @@ class CONFIG:
     def __init__(self, path='config.json'):
         with open(path) as json_file:
             config = json.load(json_file)
-            self.BUFFER_SIZE: int = config['BUFFER_SIZE']
             self.BATCH_SIZE: int = config['BATCH_SIZE']
             self.EPOCHS: int = config['EPOCHS']
             self.NUM_HEADS: int = config['NUM_HEADS']
             self.LEARNING_RATE: float = config['LEARNING_RATE']
-            self.RECOVER: bool = config['RECOVER']
+            self.REVISION: bool = config['REVISION']
             self.DEVICE: str = config['DEVICE']
+            self.SEP_TOKEN: str = config['SEP_TOKEN']
             self.START_TOKEN: str = config['START_TOKEN']
             self.STOP_TOKEN: str = config['STOP_TOKEN']
             self.MAX_LENGTH: int = config['MAX_LENGTH']
