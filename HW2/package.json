@@ -6,7 +6,7 @@
 		"format": "autopep8 --in-place --recursive .",
 		"freeze": "conda list -e > requirements.txt",
 		"preprocess": "cd src && python preprocess.py",
-		"train": "cd src && python train_select.py --model_name_or_path roberta-base --do_train --do_eval --learning_rate 5e-5 --num_train_epochs 3 --output_dir ./swag_base --per_gpu_eval_batch_size=16 --per_device_train_batch_size=16 --overwrite_output"
+		"train": "cd src && python train_select.py --max_seq_length=512 --train_file='../cache/train_select_data.json' --validation_file='../cache/valid_select_data.json' --model_name_or_path ckiplab/bert-base-chinese --tokenizer_name bert-base-chinese --do_train --do_eval --learning_rate 5e-5 --num_train_epochs 3 --output_dir ./tmp --per_gpu_eval_batch_size=16 --per_device_train_batch_size=16 --overwrite_output"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"

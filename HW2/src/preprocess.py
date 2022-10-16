@@ -1,32 +1,21 @@
-from utils import CONFIG, build_context2index
-from dataset import ContextSelectionDataset
-from typing import Dict, List
-from tqdm import tqdm
 import json
-import pickle
-# load script config
-config = CONFIG()
-# create context2index
-build_context2index()
-# create datasets
-times = 0
-progress = tqdm(total=2)
 
-with open("../data/context.json") as context_file:
-    context_list: List[str] = json.load(context_file)
-    with open("../data/train.json") as train_file:
-        train_list: List[Dict] = json.load(train_file)
-        dataset = ContextSelectionDataset(
-            context_list, train_list, config.MAX_LENGTH)
-        dataset.map_train()
-        with open('../cache/train_dataset.pickle', 'wb') as f:
-            pickle.dump(dataset, f)
-        progress.update(1)
-    with open("../data/valid.json") as valid_file:
-        valid_list: List[Dict] = json.load(valid_file)
-        dataset = ContextSelectionDataset(
-            context_list, valid_list, config.MAX_LENGTH)
-        dataset.map_train()
-        with open('../cache/valid_dataset.pickle', 'wb') as f:
-            pickle.dump(dataset, f)
-        progress.update(1)
+with open("../data/train.json") as train_file:
+    train_list = json.load(train_file)
+    list = []
+    for item in train_list:
+        tmp = {k: v for k, v in item.items()}
+        tmp['label'] = item['paragraphs'].index(item['relevant'])
+        list.append(tmp)
+    with open('../cache/train_select_data.json', 'w+', encoding='utf-8') as fp:
+        json.dump(list, fp, ensure_ascii=False)
+
+with open("../data/valid.json") as valid_file:
+    valid_list = json.load(valid_file)
+    list = []
+    for item in train_list:
+        tmp = {k: v for k, v in item.items()}
+        tmp['label'] = item['paragraphs'].index(item['relevant'])
+        list.append(tmp)
+    with open('../cache/valid_select_data.json', 'w+', encoding='utf-8') as fp:
+        json.dump(list, fp, ensure_ascii=False)

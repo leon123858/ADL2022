@@ -21,6 +21,7 @@ Fine-tuning the library models for multiple choice.
 import logging
 import os
 import sys
+import json
 from dataclasses import dataclass, field
 from itertools import chain
 from typing import Optional, Union
@@ -336,9 +337,7 @@ def main():
     )
 
     # When using your own dataset or a different dataset from swag, you will probably need to change this.
-    ending_names = [f"ending{i}" for i in range(4)]
-    context_name = "sent1"
-    question_header_name = "sent2"
+    context_name = "question"
 
     if data_args.max_seq_length is None:
         max_seq_length = tokenizer.model_max_length
@@ -359,12 +358,13 @@ def main():
 
     # Preprocessing the datasets.
     def preprocess_function(examples):
+        with open("../data/context.json") as context_file:
+            context_list = json.load(context_file)
         first_sentences = [[context] * 4 for context in examples[context_name]]
-        question_headers = examples[question_header_name]
+        paragraphs = examples['paragraphs']
         second_sentences = [
-            [f"{header} {examples[end][i]}" for end in ending_names] for i, header in enumerate(question_headers)
+            [context_list[paragraph] for paragraph in paragraphsItem] for paragraphsItem in paragraphs
         ]
-
         # Flatten out
         first_sentences = list(chain(*first_sentences))
         second_sentences = list(chain(*second_sentences))
