@@ -7,7 +7,7 @@
 		"freeze": "conda list -e > requirements.txt",
 		"preprocess": "cd src && python preprocess.py",
 		"train_select": "cd src && python train_select.py --max_seq_length=512 --train_file='../cache/train_select_data.json' --validation_file='../cache/valid_select_data.json' --model_name_or_path ckiplab/bert-base-chinese --tokenizer_name bert-base-chinese --do_train --do_eval --learning_rate 5e-5 --num_train_epochs 1 --output_dir ./tmp --per_gpu_eval_batch_size=2 --per_device_train_batch_size=2 --gradient_accumulation_steps=2 --overwrite_output",
-		"train_answer": "cd src/answerlib/ && python run_qa.py --model_name_or_path bert-base-uncased --dataset_name squad --do_train --do_eval --per_device_train_batch_size 2 --learning_rate 3e-5 --num_train_epochs 2 --max_seq_length 512 --doc_stride 128 --output_dir ./tmp"
+		"train_answer": "cd src/answerlib/ && python run_qa.py --model_name_or_path ckiplab/bert-base-chinese --tokenizer_name bert-base-chinese --dataset_name squad --train_file='../cache/train_answer_data.json' --validation_file='../cache/valid_answer_data.json' --do_train --do_eval --per_device_train_batch_size 2 --learning_rate 3e-5 --num_train_epochs 1 --max_seq_length 512 --doc_stride 128 --gradient_accumulation_steps=2 --output_dir ./tmp"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"

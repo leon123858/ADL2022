@@ -1,2 +1,4 @@
 node_modules/
 src/tmp/
+src/answerlib/tmp/
+cache/
