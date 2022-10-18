@@ -8,5 +8,5 @@ with open("../cache/answer_test_result.json") as answer_result:
         lines = ["id,answer\n"]
         for i in answer_list:
             lines.append(
-                "{},{}\n".format(i['id'], i['prediction_text']))
+                "{},{}\n".format(i['id'], i['prediction_text'].replace(',', '')))
         pred_file.writelines(lines)
