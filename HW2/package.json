@@ -12,7 +12,8 @@
 		"train_answer": "cd src/answerlib/ && python run_qa.py --max_seq_length=512 --pad_to_max_length --train_file='../../cache/train_answer_data.json' --validation_file='../../cache/valid_answer_data.json' --model_name_or_path ckiplab/bert-base-chinese --tokenizer_name bert-base-chinese --do_train --do_eval --learning_rate 3e-5 --num_train_epochs 1 --output_dir ./tmp --per_device_train_batch_size=2 --doc_stride 128 --gradient_accumulation_steps=2",
 		"pred_select": "cd src && python train_select.py --max_seq_length=512 --pad_to_max_length --model_name_or_path='./model/basic-select' --tokenizer_name bert-base-chinese --do_predict --prediction_file='../data/test.json' --output_dir ./tmp --per_gpu_eval_batch_size=2 --per_device_train_batch_size=2 --overwrite_output",
 		"pred_answer": "cd src/answerlib/ && python run_qa.py --max_seq_length=512 --pad_to_max_length --model_name_or_path='../model/basic-answer' --tokenizer_name bert-base-chinese --do_predict --test_file='../../cache/middle_test_result.json' --output_dir ./tmp --per_gpu_eval_batch_size=2 --per_device_train_batch_size=2",
-		"test": "bash src/test.sh"
+		"test": "bash src/test.sh",
+		"retrain": "cd src/answerlib/ && python run_qa.py --max_seq_length=512 --pad_to_max_length --train_file='../../cache/train_answer_data.json' --validation_file='../../cache/valid_answer_data.json' --model_name_or_path='../model/basic-answer' --tokenizer_name bert-base-chinese --do_train --do_eval --learning_rate 3e-5 --num_train_epochs 1 --output_dir ./tmp --per_device_train_batch_size=8 --doc_stride 128 --gradient_accumulation_steps=2 --overwrite_output_dir"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"
