@@ -300,12 +300,7 @@ def main():
         )
     else:
         # Downloading and loading the swag dataset from the hub.
-        raw_datasets = load_dataset(
-            "swag",
-            "regular",
-            cache_dir=model_args.cache_dir,
-            use_auth_token=True if model_args.use_auth_token else None,
-        )
+        raise Exception("should map custom data")
     # See more about loading any type of standard or custom dataset (from files, python dict, pandas DataFrame, etc) at
     # https://huggingface.co/docs/datasets/loading_datasets.html.
 
