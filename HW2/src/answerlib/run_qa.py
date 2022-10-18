@@ -674,7 +674,9 @@ def main():
         logger.info("*** Predict ***")
         results = trainer.predict(predict_dataset, predict_examples)
         metrics = results.metrics
-
+        print(results.predictions)
+        print("--------------split---------------")
+        print(results.label_ids)
         max_predict_samples = (
             data_args.max_predict_samples if data_args.max_predict_samples is not None else len(
                 predict_dataset)

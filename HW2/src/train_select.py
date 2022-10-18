@@ -100,13 +100,17 @@ class DataTrainingArguments:
     """
     Arguments pertaining to what data we are going to input our model for training and eval.
     """
-
     train_file: Optional[str] = field(
         default=None, metadata={"help": "The input training data file (a text file)."})
     validation_file: Optional[str] = field(
         default=None,
         metadata={
             "help": "An optional input evaluation data file to evaluate the perplexity on (a text file)."},
+    )
+    prediction_file: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": "An optional input prediction data file to evaluate the perplexity on (a text file)."},
     )
     overwrite_cache: bool = field(
         default=False, metadata={"help": "Overwrite the cached training and evaluation sets"}
@@ -285,13 +289,18 @@ def main():
 
     # In distributed training, the load_dataset function guarantee that only one local process can concurrently
     # download the dataset.
-    if data_args.train_file is not None or data_args.validation_file is not None:
+    if data_args.train_file is not None or data_args.validation_file is not None or data_args.prediction_file is not None:
         data_files = {}
+        extension = ""
         if data_args.train_file is not None:
             data_files["train"] = data_args.train_file
+            extension = data_args.train_file.split(".")[-1]
         if data_args.validation_file is not None:
             data_files["validation"] = data_args.validation_file
-        extension = data_args.train_file.split(".")[-1]
+            extension = data_args.validation_file.split(".")[-1]
+        if data_args.prediction_file is not None:
+            data_files["prediction"] = data_args.prediction_file
+            extension = data_args.prediction_file.split(".")[-1]
         raw_datasets = load_dataset(
             extension,
             data_files=data_files,
@@ -406,7 +415,21 @@ def main():
                 num_proc=data_args.preprocessing_num_workers,
                 load_from_cache_file=not data_args.overwrite_cache,
             )
-
+    if training_args.do_predict:
+        if "prediction" not in raw_datasets:
+            raise ValueError("--do_predict requires a prediction dataset")
+        pred_dataset = raw_datasets["prediction"]
+        if data_args.max_eval_samples is not None:
+            pred_dataset = min(
+                len(pred_dataset), data_args.max_eval_samples)
+            pred_dataset = pred_dataset.select(range(max_eval_samples))
+        with training_args.main_process_first(desc="pred_dataset dataset map pre-processing"):
+            pred_dataset = pred_dataset.map(
+                preprocess_function,
+                batched=True,
+                num_proc=data_args.preprocessing_num_workers,
+                load_from_cache_file=not data_args.overwrite_cache,
+            )
     # Data collator
     data_collator = (
         default_data_collator
@@ -463,6 +486,26 @@ def main():
 
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)
+
+    # predict
+    if training_args.do_predict:
+        logger.info("*** Prediction ***")
+
+        results = trainer.predict(pred_dataset)
+        metrics = results.metrics
+        output_list = []
+        for item in results.predictions:
+            result = np.where(item == np.amax(item))
+            max_index = result[0]
+            output_list.append(max_index)
+        with open('../cache/select_test_result.json', 'w+', encoding='utf-8') as fp:
+            json.dump(output_list, fp, ensure_ascii=False)
+        max_predict_samples = (len(pred_dataset))
+        metrics["predict_samples"] = min(
+            max_predict_samples, len(pred_dataset))
+
+        trainer.log_metrics("predict", metrics)
+        trainer.save_metrics("predict", metrics)
 
     kwargs = dict(
         finetuned_from=model_args.model_name_or_path,
