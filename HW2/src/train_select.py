@@ -495,8 +495,8 @@ def main():
         metrics = results.metrics
         output_list = []
         for item in results.predictions:
-            result = np.where(item == np.amax(item))
-            max_index = result[0]
+            item_list = item.tolist()
+            max_index = item_list.index(max(item_list))
             output_list.append(max_index)
         with open('../cache/select_test_result.json', 'w+', encoding='utf-8') as fp:
             json.dump(output_list, fp, ensure_ascii=False)
