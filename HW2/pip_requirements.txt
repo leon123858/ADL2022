@@ -1,0 +1,60 @@
+accelerate @ file:///home/runner/work/fastconda/fastconda/tmp/conda_build/conda-bld/accelerate_1665196574616/work
+aiohttp==3.8.3
+aiosignal==1.2.0
+async-timeout==4.0.2
+attrs==22.1.0
+autopep8 @ file:///opt/conda/conda-bld/autopep8_1650463822033/work
+brotlipy==0.7.0
+certifi @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_0ek9yztvu3/croot/certifi_1665076692562/work/certifi
+cffi @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_62rp5d8fd4/croots/recipe/cffi_1659598655556/work
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+click @ file:///opt/concourse/worker/volumes/live/17ca243b-fc66-462b-4bc1-f11ad524e336/volume/click_1646056621177/work
+colorama @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_b8ecd5af-5e60-48b8-80ac-92164ecb9b9bxkf0tkfp/croots/recipe/colorama_1657009097162/work
+cryptography @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_b470f7cb-c8f1-42c9-b84f-23789ea77e7c9difcqh4/croots/recipe/cryptography_1652101134392/work
+datasets==2.6.1
+dill==0.3.5.1
+evaluate==0.3.0
+filelock @ file:///opt/conda/conda-bld/filelock_1647002191454/work
+frozenlist==1.3.1
+fsspec==2022.8.2
+huggingface-hub==0.10.1
+idna @ file:///tmp/build/80754af9/idna_1637925883363/work
+importlib-metadata @ file:///opt/concourse/worker/volumes/live/04344671-a59e-4800-6391-124f9c0e5484/volume/importlib-metadata_1648562417587/work
+joblib @ file:///tmp/build/80754af9/joblib_1635411271373/work
+mkl-fft==1.3.1
+mkl-random @ file:///opt/concourse/worker/volumes/live/0cda23d8-7460-44b2-7e5d-3c76a8a0ca7e/volume/mkl_random_1626186083266/work
+mkl-service==2.4.0
+multidict==6.0.2
+multiprocess==0.70.13
+numpy @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_cer8_sm247/croots/recipe/numpy_and_numpy_base_1659432720132/work
+packaging @ file:///tmp/build/80754af9/packaging_1637314298585/work
+pandas==1.5.0
+Pillow==9.2.0
+protobuf==3.20.1
+psutil @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_c9b604bf-685f-47f6-8304-238e4e70557e1o7mmsot/croots/recipe/psutil_1656431274701/work
+pyarrow==9.0.0
+pycodestyle @ file:///tmp/build/80754af9/pycodestyle_1636635402688/work
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pyOpenSSL @ file:///opt/conda/conda-bld/pyopenssl_1643788558760/work
+pyparsing @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_3a17y2delq/croots/recipe/pyparsing_1661452538853/work
+PySocks @ file:///opt/concourse/worker/volumes/live/112288ac-9cb0-4e73-768b-13baf4ca6419/volume/pysocks_1605305820043/work
+python-dateutil==2.8.2
+pytz==2022.4
+PyYAML==6.0
+regex @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_978efa21-43f5-4f43-9f25-acd8393817ddce2xcjaf/croots/recipe/regex_1658257186496/work
+requests @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_516b78ce-034d-4395-b9b5-1d78c2847384qtnol99l/croots/recipe/requests_1657734628886/work
+responses==0.18.0
+sacremoses==0.0.43
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+tokenizers==0.13.0.dev0
+toml @ file:///tmp/build/80754af9/toml_1616166611790/work
+torch==1.13.0.dev20221002
+torchaudio==0.13.0.dev20221002
+torchvision==0.14.0.dev20221002
+tqdm @ file:///home/conda/feedstock_root/build_artifacts/tqdm_1662214488106/work
+transformers==4.23.1
+typing_extensions @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_ff5_5nqr6l/croots/recipe/typing_extensions_1659638832447/work
+urllib3 @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_53dwuk2xkk/croots/recipe/urllib3_1659110467968/work
+xxhash==3.0.0
+yarl==1.8.1
+zipp @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_b279673d-f037-44c7-8773-c5a6b6f51037d3wfr9cq/croots/recipe/zipp_1652341773612/work

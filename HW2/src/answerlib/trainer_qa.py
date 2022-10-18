@@ -101,11 +101,11 @@ class QuestionAnsweringTrainer(Trainer):
 
         predictions = self.post_process_function(
             predict_examples, predict_dataset, output.predictions, "predict")
-        metrics = self.compute_metrics(predictions)
+        # metrics = self.compute_metrics(predictions)
 
         # Prefix all keys with metric_key_prefix + '_'
-        for key in list(metrics.keys()):
-            if not key.startswith(f"{metric_key_prefix}_"):
-                metrics[f"{metric_key_prefix}_{key}"] = metrics.pop(key)
+        # for key in list(metrics.keys()):
+        #     if not key.startswith(f"{metric_key_prefix}_"):
+        #         metrics[f"{metric_key_prefix}_{key}"] = metrics.pop(key)
 
-        return PredictionOutput(predictions=predictions.predictions, label_ids=predictions.label_ids, metrics=metrics)
+        return PredictionOutput(predictions=predictions.predictions, label_ids=predictions.label_ids, metrics=None)

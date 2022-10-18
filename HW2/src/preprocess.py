@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import json
 # select
 with open("../data/train.json") as train_file:

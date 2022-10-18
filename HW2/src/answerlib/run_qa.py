@@ -18,6 +18,7 @@ Fine-tuning the library models for question answering using a slightly adapted v
 """
 # You can also adapt this script on your own question answering task. Pointers for this are left as comments.
 
+import json
 import logging
 import os
 import sys
@@ -673,19 +674,9 @@ def main():
     if training_args.do_predict:
         logger.info("*** Predict ***")
         results = trainer.predict(predict_dataset, predict_examples)
-        metrics = results.metrics
-        print(results.predictions)
-        print("--------------split---------------")
-        print(results.label_ids)
-        max_predict_samples = (
-            data_args.max_predict_samples if data_args.max_predict_samples is not None else len(
-                predict_dataset)
-        )
-        metrics["predict_samples"] = min(
-            max_predict_samples, len(predict_dataset))
-
-        trainer.log_metrics("predict", metrics)
-        trainer.save_metrics("predict", metrics)
+        with open('../../cache/answer_test_result.json', 'w+', encoding='utf-8') as fp:
+            json.dump([item for item in results.predictions],
+                      fp, ensure_ascii=False)
 
     kwargs = {"finetuned_from": model_args.model_name_or_path,
               "tasks": "question-answering"}
