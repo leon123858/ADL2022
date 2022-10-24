@@ -339,6 +339,10 @@ def main():
         revision=model_args.model_revision,
         use_auth_token=True if model_args.use_auth_token else None,
     )
+    # skip pre-weight
+    # model = AutoModelForMultipleChoice.from_config(
+    #     config=config
+    # )
 
     # When using your own dataset or a different dataset from swag, you will probably need to change this.
     context_name = "question"
