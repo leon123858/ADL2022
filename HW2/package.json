@@ -3,6 +3,8 @@
 	"version": "1.0.0",
 	"description": "the hw2 for ADL",
 	"scripts": {
+		"start": "cd report && bash download.sh && bash run.sh './data/context.json' './data/test.json' './cache/pred_result.csv'",
+		"clear": "node clear_file.js",
 		"format": "autopep8 --in-place --recursive .",
 		"freeze": "conda list -e > conda_requirements.txt && pip freeze > pip_requirements.txt",
 		"preprocess": "cd src && python preprocess.py",
@@ -22,5 +24,8 @@
 		"train_slot": "cd src/bonus/ && python train_slot.py --text_column_name 'tokens' --label_column_name 'tags' --model_name_or_path bert-base-uncased --train_file ./slot/train.json --validation_file ./slot/eval.json --output_dir ./tmp --do_train --do_eval"
 	},
 	"author": "Leon Lin",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"del": "^7.0.0"
+	}
 }
