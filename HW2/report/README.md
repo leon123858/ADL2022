@@ -1,9 +1,18 @@
 # HW2
 
+## Set environment
+
+create python 3.9 (by anaconda)
+`conda create --name <env name> python=3.9`
+you can create python environment by any other method
+
+install dependence
+`pip install -r requirements.txt`
+
 ## Train
 
 should use this command before below command
-`python preprocess.py`
+`bash download.sh && python preprocess.py`
 
 ### for MC
 
