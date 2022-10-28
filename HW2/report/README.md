@@ -6,8 +6,12 @@ create python 3.9 (by anaconda)
 `conda create --name <env name> python=3.9`
 you can create python environment by any other method
 
-install dependence
-`pip install -r requirements.txt`
+install dependence TA allowed
+
+- PyTorch 1.12.1, TensorFlow 2.10.0
+- Tqdm,numpy, pandas, scikit-learn 1.1.2, nltk 3.7
+- transformers==4.22.2, datasets==2.5.2, accelerate==0.13.0
+- gdown
 
 ## Train
 
