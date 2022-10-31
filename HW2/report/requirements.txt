@@ -1,0 +1,11 @@
+accelerate == 0.13.0
+datasets
+transformers == 4.22.2
+torch == 1.12.1
+scikit-learn == 1.1.2
+nltk == 3.7
+evaluate
+Tqdm
+numpy 
+pandas
+gdown

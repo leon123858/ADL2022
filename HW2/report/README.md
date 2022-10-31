@@ -13,6 +13,10 @@ install dependence TA allowed
 - transformers==4.22.2, datasets==2.5.2, accelerate==0.13.0
 - gdown
 
+##### note
+
+datasets 我使用了最新版(沒用 2.5.2), 因為我發現有一些 issue 在我的電腦(mac)要進版才能解決,理論上於助教電腦可以維持使用 2.5.2 版本, 但我僅測試 2.6.1 可以正確運行
+
 ## Train
 
 should use this command before below command
