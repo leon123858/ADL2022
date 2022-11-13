@@ -1,0 +1,14 @@
+{
+	"name": "hw3",
+	"version": "1.0.0",
+	"description": "the hw3 for adl 2022",
+	"directories": {
+		"doc": "docs"
+	},
+	"scripts": {
+		"init_eval_package": "cd libs/rouge && pip install -e tw_rouge",
+		"test_eval_sample": "cd libs/rouge && python eval.py -r ../../data/public.jsonl -s ../../data/sample_submission.jsonl"
+	},
+	"author": "Leon Lin",
+	"license": "ISC"
+}
