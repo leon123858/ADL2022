@@ -7,7 +7,7 @@ def main(args):
         list = []
         for line in file:
             line = json.loads(line)
-            if args.no_ans == True:
+            if args.ans == False:
                 list.append(({
                     'summary': line['id'],
                     'text': line['maintext'],
@@ -28,7 +28,8 @@ if __name__ == '__main__':
         '-d', '--data', help='the data(.jsonl) should be process to target format')
     parser.add_argument(
         '-t', '--target', help='the preprocess result for data')
-    parser.add_argument(
-        '-n', '--no_ans', default=False, action=argparse.BooleanOptionalAction)
+    parser.add_argument('--ans', action='store_true')
+    parser.add_argument('--no-ans', dest='ans', action='store_false')
+    parser.set_defaults(ans=True)
     args = parser.parse_args()
     main(args)
