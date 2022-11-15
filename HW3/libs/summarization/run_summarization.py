@@ -731,19 +731,16 @@ def main():
 
         trainer.log_metrics("predict", metrics)
         trainer.save_metrics("predict", metrics)
-        output_prediction_result_file = os.path.join(
-            training_args.output_dir, "predict_result.json")
-        with open(output_prediction_result_file, "w+") as writer:
-            json.dump(predict_results, writer)
         if trainer.is_world_process_zero():
             if training_args.predict_with_generate:
                 predictions = tokenizer.batch_decode(
                     predict_results.predictions, skip_special_tokens=True, clean_up_tokenization_spaces=True
                 )
+                print(predictions)
                 predictions = [pred.strip() for pred in predictions]
                 output_prediction_file = os.path.join(
                     training_args.output_dir, "generated_predictions.txt")
-                with open(output_prediction_file, "w") as writer:
+                with open(output_prediction_file, "w+") as writer:
                     writer.write("\n".join(predictions))
 
     kwargs = {"finetuned_from": model_args.model_name_or_path,
