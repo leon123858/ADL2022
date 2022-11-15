@@ -21,6 +21,7 @@ Fine-tuning the library models for sequence to sequence.
 import logging
 import os
 import sys
+import json
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -730,7 +731,10 @@ def main():
 
         trainer.log_metrics("predict", metrics)
         trainer.save_metrics("predict", metrics)
-
+        output_prediction_result_file = os.path.join(
+            training_args.output_dir, "predict_result.json")
+        with open(output_prediction_result_file, "w+") as writer:
+            json.dump(predict_results, writer)
         if trainer.is_world_process_zero():
             if training_args.predict_with_generate:
                 predictions = tokenizer.batch_decode(

@@ -9,6 +9,7 @@ python ../libs/summarization/run_summarization.py \
     --validation_file "${2}" \
     --source_prefix "summarize: " \
     --output_dir "${3}" \
+    --predict_with_generate \
     --per_device_train_batch_size=2 \
     --per_device_eval_batch_size=2 \
     --overwrite_output_dir \
