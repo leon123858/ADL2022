@@ -1,5 +1,5 @@
 #!/bin/sh
-# command: bash ./process.sh /path/to/train.jsonl /path/to/dev.jsonl  /path/to/dir max_len
+# command: bash ./process.sh /path/to/train.json /path/to/dev.json  /path/to/dir
 
 python ../libs/summarization/run_summarization.py \
     --model_name_or_path google/mt5-small \
