@@ -8,7 +8,7 @@
 	"scripts": {
 		"init_eval_package": "cd libs/rouge && pip install -e tw_rouge",
 		"test_eval_sample": "cd libs/rouge && python eval.py -r ../../data/public.jsonl -s ../../data/sample_submission.jsonl",
-		"preprocess": "cd src && python preprocess.py -d ../data/train.jsonl -t ../cache/train.jsonl && python preprocess.py -d ../data/public.jsonl -t ../cache/dev.jsonl && python preprocess.py -d ../data/public.jsonl -t ../cache/test.jsonl --no_ans",
+		"preprocess": "cd src && python preprocess.py -d ../data/train.jsonl -t ../cache/train.json && python preprocess.py -d ../data/public.jsonl -t ../cache/dev.json && python preprocess.py -d ../data/public.jsonl -t ../cache/test.json --no_ans",
 		"init_train": "pip install -r ./libs/summarization/requirements.txt",
 		"train": "cd src && bash process.sh ../cache/train.jsonl ../cache/dev.jsonl ../model 64"
 	},
