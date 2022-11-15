@@ -11,6 +11,7 @@ def main(args):
                 list.append(({
                     'summary': line['id'],
                     'text': line['maintext'],
+                    'title': ''
                 }))
             else:
                 list.append(({
