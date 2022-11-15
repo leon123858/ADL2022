@@ -12,7 +12,8 @@
 		"init_train": "pip install -r ./libs/summarization/requirements.txt",
 		"train": "cd src && bash process.sh ../cache/train.json ../cache/dev.json ../model",
 		"test": "cd src && bash test.sh ../model ../cache/test.json ../cache",
-		"postprocess": ""
+		"postprocess": "",
+		"evaluate": "cd ./libs/rouge && python eval.py -r ../../data/public.jsonl -s ../../data/final_result.jsonl"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"
