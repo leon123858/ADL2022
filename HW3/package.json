@@ -11,9 +11,8 @@
 		"preprocess": "cd src && python preprocess.py -d ../data/train.jsonl -t ../cache/train.json --ans && python preprocess.py -d ../data/public.jsonl -t ../cache/dev.json --ans && python preprocess.py -d ../data/public.jsonl -t ../cache/test.json --no-ans",
 		"init_train": "pip install -r ./libs/summarization/requirements.txt",
 		"train": "cd src && bash process.sh ../cache/train.json ../cache/dev.json ../model google/mt5-small 10",
-		"test": "cd src && bash test.sh ../model/model ../cache/test.json ../cache ../cache/dev.json",
-		"postprocess": "",
-		"evaluate": "cd ./libs/rouge && python eval.py -r ../../data/public.jsonl -s ../../data/final_result.jsonl"
+		"test": "cd src && python test.py -m ../model -t ../cache/test.json -d ../cache/submission.jsonl",
+		"evaluate": "cd ./libs/rouge && python eval.py -r ../../data/public.jsonl -s ../../cache/submission.jsonl"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"

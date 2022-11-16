@@ -8,19 +8,17 @@ def main(args):
         for line in file:
             line = json.loads(line)
             if args.ans == False:
-                list.append(({
-                    'summary': '',
+                list.append(json.dumps({
                     'text': line['maintext'],
-                    'title': line['id']
+                    'id': line['id']
                 }))
             else:
-                list.append(({
+                list.append(json.dumps({
                     'summary': line['title'],
                     'text': line['maintext'],
-                    'title': line['id']
                 }))
         with open(args.target, 'w+', encoding='utf-8') as fp:
-            json.dump(list, fp, ensure_ascii=False)
+            fp.write('\n'.join(list))
 
 
 if __name__ == '__main__':
