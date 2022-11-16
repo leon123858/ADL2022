@@ -5,7 +5,7 @@ import argparse
 
 def main(args):
     summarizer = pipeline(
-        "summarization", model=args.model, device=0, batch_size=4, num_beams=1)
+        "summarization", model=args.model, device=0, batch_size=1, num_beams=1)
     list = []
     with open(args.target_file) as f:
         for line in f:
