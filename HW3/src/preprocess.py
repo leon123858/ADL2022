@@ -9,18 +9,18 @@ def main(args):
             line = json.loads(line)
             if args.ans == False:
                 list.append(({
-                    'summary': line['id'],
+                    'summary': '',
                     'text': line['maintext'],
-                    'title': ''
+                    'title': line['id']
                 }))
             else:
                 list.append(({
-                    'summary': line['id'],
+                    'summary': line['title'],
                     'text': line['maintext'],
-                    'title': line['title']
+                    'title': line['id']
                 }))
-        with open(args.target, 'w+') as fp:
-            json.dump(list, fp)
+        with open(args.target, 'w+', encoding='utf-8') as fp:
+            json.dump(list, fp, ensure_ascii=False)
 
 
 if __name__ == '__main__':

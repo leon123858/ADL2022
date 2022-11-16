@@ -21,7 +21,6 @@ Fine-tuning the library models for sequence to sequence.
 import logging
 import os
 import sys
-import json
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -308,7 +307,7 @@ def main():
     # See all possible arguments in src/transformers/training_args.py
     # or by passing the --help flag to this script.
     # We now keep distinct sets of args, for a cleaner separation of concerns.
-    print("start main")
+
     parser = HfArgumentParser(
         (ModelArguments, DataTrainingArguments, Seq2SeqTrainingArguments))
     if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
@@ -731,13 +730,14 @@ def main():
 
         trainer.log_metrics("predict", metrics)
         trainer.save_metrics("predict", metrics)
+
         if trainer.is_world_process_zero():
             if training_args.predict_with_generate:
                 predictions = tokenizer.batch_decode(
                     predict_results.predictions, skip_special_tokens=True, clean_up_tokenization_spaces=True
                 )
-                print(predictions)
                 predictions = [pred.strip() for pred in predictions]
+                print(predictions)
                 output_prediction_file = os.path.join(
                     training_args.output_dir, "generated_predictions.txt")
                 with open(output_prediction_file, "w+") as writer:

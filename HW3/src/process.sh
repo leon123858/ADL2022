@@ -1,8 +1,8 @@
 #!/bin/sh
-# command: bash ./process.sh /path/to/train.json /path/to/dev.json  /path/to/dir
+# command: bash ./process.sh /path/to/train.json /path/to/dev.json  /path/to/dir /path/to/base/model epoach_count
 
 python ../libs/summarization/run_summarization.py \
-    --model_name_or_path google/mt5-small \
+    --model_name_or_path "${4}" \
     --do_train \
     --do_eval \
     --train_file "${1}" \
@@ -15,5 +15,5 @@ python ../libs/summarization/run_summarization.py \
     --overwrite_output_dir \
     --max_source_length 256 \
     --max_target_length 64 \
-    --num_train_epochs 10 \
+    --num_train_epochs ${5} \
     --gradient_accumulation_steps 2
