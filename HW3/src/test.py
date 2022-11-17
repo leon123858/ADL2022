@@ -7,7 +7,7 @@ from tqdm import tqdm
 def main(args):
     progress = tqdm(total=5494)
     summarizer = pipeline(
-        "summarization", model=args.model, device=0, batch_size=1, num_beams=1)
+        "summarization", model=args.model, batch_size=4, device=0, max_length=30, do_sample=True, top_p=0.7, top_k=20)
     list = []
     with open(args.target_file) as f:
         for line in f:
