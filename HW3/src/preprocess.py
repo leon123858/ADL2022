@@ -9,6 +9,7 @@ def main(args):
             line = json.loads(line)
             if args.ans == False:
                 list.append(json.dumps({
+                    # 'summary': '<MASK>',
                     'text': line['maintext'],
                     'id': line['id']
                 }))

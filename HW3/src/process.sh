@@ -15,6 +15,8 @@ python ../libs/summarization/run_summarization.py \
     --overwrite_output_dir \
     --max_source_length 512 \
     --max_target_length 64 \
+    --text_column "text" \
+    --summary_column "summary" \
     --adafactor 
     --num_train_epochs ${5} \
     --gradient_accumulation_steps 2
