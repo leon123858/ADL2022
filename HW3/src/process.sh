@@ -13,7 +13,7 @@ python ../libs/summarization/run_summarization.py \
     --per_device_train_batch_size=8 \
     --per_device_eval_batch_size=8 \
     --overwrite_output_dir \
-    --max_source_length 512 \
+    --max_source_length 256 \
     --max_target_length 64 \
     --text_column "text" \
     --summary_column "summary" \
