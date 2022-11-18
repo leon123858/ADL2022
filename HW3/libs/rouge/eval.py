@@ -16,7 +16,7 @@ def main(args):
             line = json.loads(line)
             preds[line['id']] = line['title'].strip() + '\n'
 
-    keys = preds.keys()
+    keys = refs.keys()
     refs = [refs[key] for key in keys]
     preds = [preds[key] for key in keys]
 

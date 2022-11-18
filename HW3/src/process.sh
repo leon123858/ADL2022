@@ -1,5 +1,5 @@
 #!/bin/sh
-# command: bash ./process.sh /path/to/train.json /path/to/dev.json  /path/to/dir /path/to/base/model epoach_count
+# command: bash ./process.sh /path/to/train.json /path/to/dev.json  /path/to/dir /path/to/base/model
 
 python ../libs/summarization/run_summarization.py \
     --model_name_or_path "${4}" \
@@ -17,6 +17,5 @@ python ../libs/summarization/run_summarization.py \
     --max_target_length 64 \
     --text_column "text" \
     --summary_column "summary" \
-    --adafactor 
-    --num_train_epochs ${5} \
+    --adafactor \
     --gradient_accumulation_steps 2
