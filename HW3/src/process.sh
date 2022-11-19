@@ -18,4 +18,9 @@ python ../libs/summarization/run_summarization.py \
     --text_column "text" \
     --summary_column "summary" \
     --adafactor \
-    --gradient_accumulation_steps 2
+    --num_beams 5 \
+    --gradient_accumulation_steps 2 \
+    --logging_strategy epoch \
+    --save_strategy epoch \
+    --learning_rate 5e-04 \
+    --num_train_epochs 5
