@@ -23,4 +23,4 @@ python ../libs/summarization/run_summarization.py \
     --logging_strategy epoch \
     --save_strategy epoch \
     --learning_rate 5e-04 \
-    --num_train_epochs 5
+    --num_train_epochs 7

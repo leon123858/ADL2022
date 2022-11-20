@@ -9,7 +9,7 @@ def main(args):
             line = json.loads(line)
             if args.ans == False:
                 list.append(json.dumps({
-                    # 'summary': '<MASK>',
+                    'summary': '<MASK>',
                     'text': line['maintext'],
                     'id': line['id']
                 }))
@@ -17,6 +17,7 @@ def main(args):
                 list.append(json.dumps({
                     'summary': line['title'],
                     'text': line['maintext'],
+                    'id': line['id']
                 }))
         with open(args.target, 'w+', encoding='utf-8') as fp:
             fp.write('\n'.join(list))

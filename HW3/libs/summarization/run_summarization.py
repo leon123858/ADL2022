@@ -718,7 +718,7 @@ def main():
         logger.info("*** Predict ***")
 
         predict_results = trainer.predict(
-            predict_dataset, metric_key_prefix="predict", max_length=max_length, num_beams=num_beams
+            predict_dataset, metric_key_prefix="predict", max_length=max_length, num_beams=num_beams, early_stopping=True
         )
         metrics = predict_results.metrics
         max_predict_samples = (
