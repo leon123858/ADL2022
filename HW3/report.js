@@ -11,4 +11,5 @@ async function copy(src, dst) {
 (async () => {
 	await copy('./libs', './report/libs');
 	await copy('./src', './report/src');
+	await copy('./colab', './report/colab');
 })();
