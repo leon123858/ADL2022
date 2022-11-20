@@ -38,6 +38,24 @@ use `bash run.sh [path/to/data/want/to/be/predict.jsonl] [path/to/result.jsonl]'
 1. get each check point folder in train process's output_dir
 2. use each check point to generate prediction
 3. evaluate each check point prediction result by rouge
-4. use excel to plot it
+4. use this code to plot it
+   ```
+   def rouge_data(which_rouge,data):
+         return {
+               'rouge_r':list(reversed([epoch[which_rouge]['r'] for epoch in data])),
+               'rouge_p':list(reversed([epoch[which_rouge]['p'] for epoch in data])),
+               'rouge_f':list(reversed([epoch[which_rouge]['f'] for epoch in data])),
+         }
+   import matplotlib.pyplot as plt
+   x = [0,1,2,3,4,5,6,7]
+   plt.title("rouge-l curve for 7 epoch") # title
+   plt.ylabel("value") # y label
+   plt.xlabel("epoch") # x label
+   plt.plot(x,rouge_data('rouge-l',data)['rouge_r'],label='rouge_r')
+   plt.plot(x,rouge_data('rouge-l',data)['rouge_p'],label='rouge_p')
+   plt.plot(x,rouge_data('rouge-l',data)['rouge_f'],label='rouge_f')
+   plt.legend()
+   plt.show()
+   ```
 
 ## Bonus
