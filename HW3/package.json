@@ -11,7 +11,7 @@
 		"preprocess": "cd src && python preprocess.py -d ../data/train.jsonl -t ../cache/train.json --ans && python preprocess.py -d ../data/public.jsonl -t ../cache/dev.json --ans && python preprocess.py -d ../data/public.jsonl -t ../cache/test.json --no-ans",
 		"init_train": "pip install -r ./libs/summarization/requirements.txt",
 		"train": "cd src && bash process.sh ../cache/train.json ../cache/dev.json ../model google/mt5-small 10",
-		"test": "cd src && python test.sh ../cache/test.json ../cache/dev.json ../cache ../model",
+		"test": "cd src && bash test.sh ../cache/test.json ../cache/dev.json ../cache ../model",
 		"evaluate": "cd ./libs/rouge && python eval.py -r ../../data/public.jsonl -s ../../cache/submission.jsonl",
 		"postprocess": "cd src && python postprocess.py -o ../cache/test.json -t ../cache/generated_predictions.txt -d ../cache/submission.jsonl"
 	},

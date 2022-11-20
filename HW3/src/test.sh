@@ -1,5 +1,5 @@
 #!/bin/sh
-# command: bash ./process.sh /path/to/test.json /path/to/dev.json  /path/to/dir /path/to/base/model
+# command: bash ./test.sh /path/to/test.json /path/to/dev.json  /path/to/dir /path/to/base/model
 
 python ../libs/summarization/run_summarization.py \
     --model_name_or_path "${4}" \
