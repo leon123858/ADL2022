@@ -6,6 +6,9 @@
 		"doc": "docs"
 	},
 	"scripts": {
+		"report": "node report.js",
+		"clear": "node clear.js",
+		"start": "cd report && bash download.sh && bash run.sh ../data/sample_test.jsonl ../cache/final_result.jsonl",
 		"init_eval_package": "cd libs/rouge && pip install -e tw_rouge",
 		"test_eval_sample": "cd libs/rouge && python eval.py -r ../../data/public.jsonl -s ../../data/sample_submission.jsonl",
 		"preprocess": "cd src && python preprocess.py -d ../data/train.jsonl -t ../cache/train.json --ans && python preprocess.py -d ../data/public.jsonl -t ../cache/dev.json --ans && python preprocess.py -d ../data/public.jsonl -t ../cache/test.json --no-ans",
@@ -16,5 +19,8 @@
 		"postprocess": "cd src && python postprocess.py -o ../cache/test.json -t ../cache/generated_predictions.txt -d ../cache/submission.jsonl"
 	},
 	"author": "Leon Lin",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"fs-extra": "^10.1.0"
+	}
 }
