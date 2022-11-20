@@ -35,8 +35,9 @@ use `bash run.sh [path/to/data/want/to/be/predict.jsonl] [path/to/result.jsonl]'
 
 ## Plot
 
-1. get `trainer_state.json` file in train process's output_dir,
-2. get the loss in each step
-3. use excel to plot it
+1. get each check point folder in train process's output_dir
+2. use each check point to generate prediction
+3. evaluate each check point prediction result by rouge
+4. use excel to plot it
 
 ## Bonus
