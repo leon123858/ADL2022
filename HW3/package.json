@@ -8,7 +8,7 @@
 	"scripts": {
 		"report": "node report.js",
 		"clear": "node clear.js",
-		"start": "cd report && bash download.sh && bash run.sh ../data/sample_test.jsonl ../cache/final_result.jsonl",
+		"start": "cd report && bash download.sh && bash run.sh ../data/public.jsonl ../cache/final_result.jsonl",
 		"init_eval_package": "cd libs/rouge && pip install -e tw_rouge",
 		"test_eval_sample": "cd libs/rouge && python eval.py -r ../../data/public.jsonl -s ../../data/sample_submission.jsonl",
 		"preprocess": "cd src && python preprocess.py -d ../data/train.jsonl -t ../cache/train.json --ans && python preprocess.py -d ../data/public.jsonl -t ../cache/dev.json --ans && python preprocess.py -d ../data/public.jsonl -t ../cache/test.json --no-ans",
