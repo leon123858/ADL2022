@@ -59,5 +59,3 @@ use `bash run.sh [path/to/data/want/to/be/predict.jsonl] [path/to/result.jsonl]'
    ```
 
 can also plot it by code in `./colab`
-
-## Bonus
