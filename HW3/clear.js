@@ -17,4 +17,5 @@ async function remove(dest) {
 	await remove('./report/colab');
 	await remove('./report/data.zip');
 	await remove('./report/model.zip');
+	await remove('./report/report.pdf');
 })();
