@@ -9,6 +9,7 @@ cd ./libs/rouge
 pip install -e tw_rouge
 pip install tqdm
 pip install gdown
+pip install --upgrade --no-cache-dir gdown
 cd ../../
 # 下載數據和模型
 mkdir data
