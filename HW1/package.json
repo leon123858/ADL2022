@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "hw1 for ADL2022",
 	"scripts": {
-		"downloadWordModel": "./preprocess.sh",
+		"downloadWordModel": "bash download_glove.sh",
 		"preprocess": "python preprocess_intent.py && python preprocess_slot.py",
 		"format": "autopep8 --in-place --recursive .",
 		"freeze": "conda list -e > requirements.txt",
